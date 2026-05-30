@@ -1,0 +1,219 @@
+name: CY.LEE
+headline: Robotic Learning Researcher
+tagline: Real-world manipulation, imitation learning, VLA models, and closed-loop robot deployment.
+youtube: https://www.youtube.com/@ForeverLearningRobot
+github: "#"
+location: Korea
+hero_image: assets/img/profile.jpg
+hero_video: assets/video/hero.mp4
+
+research_summary: >
+  My research goal is to build robots that learn long-horizon manipulation skills
+  and operate reliably in unstructured real-world environments. I focus on
+  imitation learning and vision-language-action (VLA) models for robotic
+  manipulation, with hands-on experience deploying multimodal policies on physical
+  robots and validating their robustness through closed-loop real-robot trials.
+  I am currently extending this work toward reward and value learning from
+  foundation models to reduce demonstration dependence and improve generalization.
+
+focus:
+  - Imitation Learning
+  - Vision-Language-Action Models
+  - Real-Robot Manipulation
+  - Closed-Loop Deployment
+  - Foundation-Model Rewards
+  - Embodied AI
+
+research_highlights:
+  - title: IL on real robots, not just simulation
+    summary: Designed and validated MaskACT, an ACT-based behavior cloning policy with a binary visual mask prior, improving real-robot thinning success from 40% to 62% with 1 hour of teleoperated demonstrations.
+  - title: End-to-end IL pipeline ownership
+    summary: Built and operated the full stack from teleoperation rig, dataset curation, training, and closed-loop deployment.
+  - title: Multi-platform manipulation experience
+    summary: Deployed learned and classical policies on AI-Worker, Piper, xArm7, UR3/UR5, RB5-850e, and 4-Finger Gripper (SNU).
+  - title: Active research trajectory
+    summary: Extending single-arm VLA to bimanual setups, integrating GR00T-N1.5, and exploring foundation-model reward/value learning.
+
+experience:
+  - organization: Metafarmers Inc.
+    role: Researcher
+    period: Mar 2025 - Present
+    summary: Lead developer of an imitation-learning-based autonomous flower-thinning system.
+    details:
+      - Lead developer of an imitation-learning-based autonomous flower-thinning system, including single-arm to bimanual extension.
+      - Responsible for VLA/IL policy design, teleoperation data collection, training, and real-robot evaluation.
+      - Currently integrating foundation models such as GR00T-N1.5 and exploring Real2Sim2Real pipelines for multi-flower environments.
+  - organization: Korea Electronics Technology Institute (KETI)
+    role: Researcher
+    period: Sep 2024 - Dec 2024
+    summary: Integrated the full system for 3D collaborative teleoperation in harsh environments.
+    details:
+      - Integrated camera-based gripper teleoperation, object detection/tracking, and 3D reconstruction.
+      - Contributed to a system that received the Robotworld 2024 Best Product of the Year award.
+  - organization: Pyloneer Inc.
+    role: AI/IoT Researcher
+    period: Jun 2023 - Aug 2024
+    summary: Developed charging systems and time-series anomaly detection models for real sensor data.
+    details:
+      - Developed an ESP32-based EV charging system, including hardware design, KC certification, and deployment of 19 units across 2 testbeds.
+      - Built clustering and auto-encoder-based anomaly detection models for time-series current data from process equipment.
+      - Designed early-detection experiments for lithium-ion battery thermal runaway.
+  - organization: KITECH AI Robot Lab
+    role: Student Researcher
+    period: Mar 2021 - Feb 2023
+    summary: Developed learning and perception systems for mobile robots.
+    details:
+      - Developed deep-RL-based pedestrian avoidance for mobile robots in dynamic environments as a master's thesis project.
+      - Worked on an outdoor autonomous public-service robot, including LiDAR-camera social-distance recognition and YOLOv5-based 15-class object recognition with auto-labeling.
+  - organization: SFA Engineering Corporation
+    role: Intern
+    period: Jan 2020 - Feb 2020
+    summary: Engineering internship in industrial automation.
+    details:
+      - Supported engineering work in an industrial automation environment.
+  - organization: Technology Transfer Institute
+    role: KOICA YP Intern
+    period: Jan 2019 - Jul 2019
+    summary: International cooperation and technology transfer support.
+    details:
+      - Supported international cooperation and technology transfer operations.
+
+
+publications:
+  - id: C3
+    year: 2026
+    title: "TACT: Imitation Learning-based Robotic Autonomous Flower Thinning System"
+    original: "모방학습 기반 로봇 자율적화 시스템 개발"
+    authors: "CY.LEE, Taewook Park, Dohyeon Kim, Kyuhwa Lee, Hyondong Oh, and Wonjae Yun"
+    venue: 21st Korea Robotics Society Annual Conference (KRoC 2026)
+    presentation: Oral
+  - id: W0
+    year: 2025
+    title: "MaskACT: Behavior Cloning for Robotic Flower Thinning"
+    original: ""
+    authors: "CY.LEE, Taewook Park, Hyondong Oh, Won-Jae Yun, Dohyeon Kim, and Kyu-Wha Lee"
+    venue: IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) Workshop
+    presentation: Poster
+  - id: C2
+    year: 2025
+    title: "Autonomous Pollination Robot System for Indoor Vertical Strawberry Farming: Development and Experimental Evaluation"
+    original: "실내 수직농장용 자동 수분 로봇 시스템 개발 및 실험 평가"
+    authors: "CY.LEE, Taewook Park, Gaon Lee, Sungwook Won, Junhyung Sim, Dohyeon Kim, Hyondong Oh, and Wonjae Yun"
+    venue: The 40th ICROS Annual Conference (ICROS 2025)
+    presentation: Poster
+  - id: C1
+    year: 2022
+    title: "Reinforcement Learning-based Irregularly Moving Object Avoidance Method for Mobile Robots"
+    original: "모바일 로봇을 위한 강화학습 기반 불규칙한 이동성 장애물 회피 방법"
+    authors: "Sujeong You and CY.LEE"
+    venue: KSPE Spring Conference
+  - id: C0
+    year: 2022
+    title: "A*-Search-based Multi-Robot Collision Avoidance Path Planning"
+    original: "A* 탐색 기반 다중로봇 충돌회피 경로계획"
+    authors: "CS Lee, S Lee, CY Lee, and S You"
+    venue: KSPE Spring Conference
+
+patents:
+  - title: Braille Input Device
+    number: "KR 10-2185561"
+    application: "KR 10-2020-0081651"
+    date: "2018.12"
+    registration_date: "2020.11.26"
+    application_date: "2020.07.08"
+
+awards:
+  - title: Robotworld 2024 Best Product of the Year
+    date: "2024"
+    organization: Korea Electronics Technology Institute (KETI)
+    description: 3D Collaborative Teleoperation Technology.
+  - title: "K-Maker's Grand Prize"
+    date: "2019"
+    organization: K-Factory Center
+    description: Production of cat healthcare toys.
+  - title: Creative Convergence Design Academy Design Excellence Award
+    date: "2019"
+    organization: Sharing and Technologies Incorporated
+    description: Solar power system concept for farms in cold regions.
+
+other_projects:
+  - title: Voice Recognition-Based Autonomous Vehicle Interface
+    period: Dec 2022 - Feb 2023
+    organization: Hyundai industry-academic project
+    summary: Voice interface for autonomous vehicle interaction.
+  - title: Outdoor Public Robot Service
+    period: Feb 2022 - Jun 2022
+    organization: KITECH
+    summary: LiDAR-camera social-distance recognition for an outdoor autonomous public-service robot.
+  - title: Strain-Gauge Pick-and-Place via YOLO
+    period: Jul 2021 - Dec 2021
+    organization: Hanyang University
+    summary: Vision-guided pick-and-place workflow using YOLO.
+  - title: Vision-Based Motion Generation for Medical Robot
+    period: Mar 2021 - Jun 2021
+    organization: Hanyang University
+    summary: Vision-based treatment motion generation for a TMS medical robot.
+
+
+skills:
+  software:
+    - Python
+    - C++
+    - PyTorch
+    - TensorFlow
+    - ROS 1 / ROS 2
+    - Docker
+    - Git
+    - MQTT
+  learning:
+    - ACT
+    - Behavior Cloning
+    - Diffusion Policy
+    - Flow Matching Policies
+    - Variational Autoencoder
+    - Action Chunking
+    - Transformer-Based Policies
+    - Deep RL / PPO
+    - GR00T-N1.5
+    - LeRobot / OpenVLA / pi0 ecosystem
+  tooling:
+    - MuJoCo
+    - PyTorch Gym
+    - Behavior Trees
+    - YOLO v5 / v8
+    - 3D Object Detection & Tracking
+    - Sensor Fusion
+    - LiDAR-Camera Calibration
+    - Auto-Labeling
+  robots:
+    - AI-Worker
+    - Piper
+    - xArm7
+    - UR3 / UR5
+    - RB5-850e
+    - 4-Finger Gripper (SNU)
+    - Husky
+    - Turtlebot 2
+  sensors:
+    - Realsense D405 / D435 / L515
+    - ZIVID2
+    - ZED-M
+    - Helios
+    - Velodyne 16-channel LiDAR
+    - RPlidar
+    - Manus Glove
+    - Vive Tracker
+    - Leader-Follower CAN
+
+languages:
+  - language: Korean
+    level: Native
+  - language: English
+    level: Proficient, OPIc IH
+
+education:
+  - school: Hanyang University
+    period: Mar 2021 - Feb 2023
+    degree: M.S. in Intelligent Robotics, HYU-KITECH
+    details:
+      - "Thesis: Deep Reinforcement Learning-based Pedestrian Avoidance for Mobile Robots."

@@ -1,0 +1,49 @@
+---
+layout: default
+---
+<article class="content-page project-detail">
+  <header class="page-header">
+    <p class="eyebrow">{{ page.period }}</p>
+    <h1>{{ page.title }}</h1>
+    <p>{{ page.summary }}</p>
+  </header>
+
+  <figure class="detail-media media-shell" data-media-shell>
+    <img src="{{ page.image | relative_url }}" alt="{{ page.title }} project media" data-media>
+    <div class="media-fallback" data-media-fallback>
+      <span class="fallback-kicker">Project Media Slot</span>
+      <strong>{{ page.image }}</strong>
+      <small>Add an image or GIF here to replace this fallback.</small>
+    </div>
+  </figure>
+
+  <section class="project-facts">
+    <div>
+      <span>Role</span>
+      <strong>{{ page.role }}</strong>
+    </div>
+    <div>
+      <span>Organization</span>
+      <strong>{{ page.organization }}</strong>
+    </div>
+    <div>
+      <span>Focus</span>
+      <strong>{{ page.focus }}</strong>
+    </div>
+  </section>
+
+  <section class="prose">
+    {{ content }}
+  </section>
+
+  {% if page.technologies %}
+    <section class="section tight">
+      <h2>Technologies</h2>
+      <div class="focus-grid small">
+        {% for tech in page.technologies %}
+          <span>{{ tech }}</span>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+</article>

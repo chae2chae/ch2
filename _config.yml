@@ -1,0 +1,31 @@
+title: CY.LEE
+description: Robotic learning and real-world manipulation portfolio.
+lang: en
+url: "https://chae2chae.github.io"
+baseurl: "/ch2"
+
+markdown: kramdown
+permalink: /blog/:year/:month/:day/:title/
+
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "projects"
+    values:
+      layout: project
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: post
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor

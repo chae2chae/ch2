@@ -1,0 +1,19 @@
+{% assign project = include.project %}
+<a class="project-card" href="{{ project.url | relative_url }}">
+  <figure class="card-media media-shell" data-media-shell>
+    <img src="{{ project.image | relative_url }}" alt="{{ project.title }} thumbnail" data-media>
+    <div class="media-fallback" data-media-fallback>
+      <span>{{ project.fallback | default: 'Project Media' }}</span>
+    </div>
+  </figure>
+  <div class="card-body">
+    <span class="card-meta">{{ project.period }}</span>
+    <h3>{{ project.title }}</h3>
+    <p>{{ project.summary }}</p>
+    <div class="tag-row">
+      {% for tech in project.technologies limit: 3 %}
+        <span>{{ tech }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</a>
