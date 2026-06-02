@@ -1,0 +1,12 @@
+- title: "TacO: Robot Manipulation을 위한 Tactile Sensor 비교"
+  description: Hardware spec이 아니라 policy success 기준으로 tactile sensor를 비교한 TacO benchmark에 대한 reading note.
+  date_label: "2026.06.02"
+  url: /ko/blog/2026/06/02/taco-tactile-sensors/
+  tags:
+    - Paper Review
+- title: "VITRA: Human Activity Video로 Vision-Language-Action Model 사전학습하기"
+  description: Unscripted egocentric human video를 dexterous manipulation pretraining data로 변환하는 VITRA에 대한 reading note.
+  date_label: "2026.06.01"
+  url: /ko/blog/2026/06/01/vitra-human-video-vla/
+  tags:
+    - Paper Review

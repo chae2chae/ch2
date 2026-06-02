@@ -1,0 +1,94 @@
+en:
+  nav:
+    about: about
+    cv: cv
+    publications: publications
+    projects: projects
+    blog: blog
+  footer: Robotic learning portfolio.
+  language_toggle: Language toggle
+  home:
+    hero_kicker: Robotic Learning Portfolio
+    research_kicker: Research Interest
+    research_title: Learning robots for long-horizon, real-world tasks.
+    projects_kicker: Selected Projects
+    projects_link: View all projects
+    experience_kicker: Experience
+    experience_title: Current and recent roles
+    cv_link: View full CV
+    blog_kicker: Latest Blog
+    blog_title: Blog posts
+    blog_link: View blog
+  project:
+    role: Role
+    organization: Organization
+    focus: Focus
+    media_kicker: Project Media Slot
+    media_help: Add an image or GIF here to replace this fallback.
+    progression: Learning Progression
+    results: Results
+    technologies: Technologies
+  cv:
+    education: Education
+    experience: Experience
+    skills: Skills
+    software: Languages & Frameworks
+    learning: IL / RL / VLA
+    tooling: Simulation & Tooling
+    robots: Robot Platforms
+    sensing: Sensing & Teleop
+    languages: Languages
+    additional_projects: Additional Projects
+    patent: Patent
+    awards: Honors & Awards
+    registration: Registration
+    application: Application
+  blog:
+    date_format: "%B %d, %Y"
+ko:
+  nav:
+    about: 소개
+    cv: 이력
+    publications: 논문
+    projects: 프로젝트
+    blog: 블로그
+  footer: 로봇 학습 포트폴리오.
+  language_toggle: 언어 전환
+  home:
+    hero_kicker: Robotic Learning Portfolio
+    research_kicker: Research Interest
+    research_title: 장기 과제를 실제 환경에서 수행하는 학습 로봇을 연구합니다.
+    projects_kicker: Selected Projects
+    projects_link: 전체 프로젝트 보기
+    experience_kicker: Experience
+    experience_title: 주요 연구 및 실무 경험
+    cv_link: 전체 CV 보기
+    blog_kicker: Latest Blog
+    blog_title: 연구 노트
+    blog_link: 블로그 보기
+  project:
+    role: 역할
+    organization: 소속
+    focus: 초점
+    media_kicker: Project Media Slot
+    media_help: 이미지나 GIF를 추가하면 이 영역이 대체됩니다.
+    progression: 연구 진행 흐름
+    results: 성과
+    technologies: 기술 스택
+  cv:
+    education: 학력
+    experience: 경력
+    skills: 기술 스택
+    software: Languages & Frameworks
+    learning: IL / RL / VLA
+    tooling: Simulation & Tooling
+    robots: Robot Platforms
+    sensing: Sensing & Teleop
+    languages: 언어
+    additional_projects: 추가 프로젝트
+    patent: 특허
+    awards: 수상
+    registration: 등록
+    application: 출원
+  blog:
+    date_format: "%Y.%m.%d"

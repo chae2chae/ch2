@@ -1,10 +1,18 @@
 ---
 layout: default
 ---
-{% assign profile = site.data.profile %}
+{% assign current_lang = page.lang | default: site.lang | default: 'en' %}
+{% assign ui = site.data.ui[current_lang] | default: site.data.ui.en %}
+{% if current_lang == 'ko' %}
+  {% assign profile = site.data.profile_ko %}
+  {% assign home_path = '/ko/' %}
+{% else %}
+  {% assign profile = site.data.profile %}
+  {% assign home_path = '/' %}
+{% endif %}
 <section class="hero section-grid">
   <div class="hero-copy">
-    <p class="eyebrow">Robotic Learning Portfolio</p>
+    <p class="eyebrow">{{ ui.home.hero_kicker }}</p>
     <h1>{{ profile.name }}</h1>
     <p class="hero-title">{{ profile.headline }}</p>
     <p class="hero-summary">{{ profile.research_summary }}</p>
@@ -30,8 +38,8 @@ layout: default
 
 <section class="section">
   <div class="section-heading">
-    <p class="eyebrow">Research Interest</p>
-    <h2>Learning robots for long-horizon, real-world tasks.</h2>
+    <p class="eyebrow">{{ ui.home.research_kicker }}</p>
+    <h2>{{ ui.home.research_title }}</h2>
   </div>
   <div class="focus-grid">
     {% for item in profile.focus %}
@@ -43,12 +51,16 @@ layout: default
 <section class="section">
   <div class="section-heading split-heading">
     <div>
-      <p class="eyebrow">Selected Projects</p>
+      <p class="eyebrow">{{ ui.home.projects_kicker }}</p>
     </div>
-    <a class="text-link" href="{{ '/projects/' | relative_url }}">View all projects</a>
+    <a class="text-link" href="{{ home_path | append: 'projects/' | relative_url }}">{{ ui.home.projects_link }}</a>
   </div>
   <div class="card-grid">
-    {% assign featured_projects = site.projects | sort: 'order' | slice: 0, 6 %}
+    {% if current_lang == 'ko' %}
+      {% assign featured_projects = site.data.projects_ko | sort: 'order' | slice: 0, 6 %}
+    {% else %}
+      {% assign featured_projects = site.projects | sort: 'order' | slice: 0, 6 %}
+    {% endif %}
     {% for project in featured_projects %}
       {% include project-card.html project=project hide_media=true %}
     {% endfor %}
@@ -58,10 +70,10 @@ layout: default
 <section class="section">
   <div class="section-heading split-heading">
     <div>
-      <p class="eyebrow">Experience</p>
-      <h2>Current and recent roles</h2>
+      <p class="eyebrow">{{ ui.home.experience_kicker }}</p>
+      <h2>{{ ui.home.experience_title }}</h2>
     </div>
-    <a class="text-link" href="{{ '/cv/' | relative_url }}">View full CV</a>
+    <a class="text-link" href="{{ home_path | append: 'cv/' | relative_url }}">{{ ui.home.cv_link }}</a>
   </div>
   <div class="cv-list compact">
     {% for item in profile.experience limit: 4 %}
@@ -88,15 +100,20 @@ layout: default
 <section class="section">
   <div class="section-heading split-heading">
     <div>
-      <p class="eyebrow">Latest Blog</p>
-      <h2>Blog posts</h2>
+      <p class="eyebrow">{{ ui.home.blog_kicker }}</p>
+      <h2>{{ ui.home.blog_title }}</h2>
     </div>
-    <a class="text-link" href="{{ '/blog/' | relative_url }}">View blog</a>
+    <a class="text-link" href="{{ home_path | append: 'blog/' | relative_url }}">{{ ui.home.blog_link }}</a>
   </div>
   <div class="post-list three-up">
-    {% for post in site.posts limit: 3 %}
+    {% if current_lang == 'ko' %}
+      {% assign home_posts = site.data.posts_ko %}
+    {% else %}
+      {% assign home_posts = site.posts %}
+    {% endif %}
+    {% for post in home_posts limit: 3 %}
       <a class="post-row" href="{{ post.url | relative_url }}">
-        <span>{{ post.date | date: '%b %d, %Y' }}</span>
+        <span>{% if post.date_label %}{{ post.date_label }}{% else %}{{ post.date | date: '%b %d, %Y' }}{% endif %}</span>
         <strong>{{ post.title }}</strong>
         <p>{{ post.description }}</p>
       </a>

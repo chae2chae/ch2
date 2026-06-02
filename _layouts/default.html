@@ -1,16 +1,30 @@
 <!doctype html>
-<html lang="{{ site.lang | default: 'en' }}">
+{% assign current_lang = page.lang | default: site.lang | default: 'en' %}
+{% assign ui = site.data.ui[current_lang] | default: site.data.ui.en %}
+{% if current_lang == 'ko' %}
+  {% assign home_path = '/ko/' %}
+  {% assign en_path = page.url | remove_first: '/ko' %}
+  {% assign ko_path = page.url %}
+  {% if en_path == '' %}
+    {% assign en_path = '/' %}
+  {% endif %}
+{% else %}
+  {% assign home_path = '/' %}
+  {% assign en_path = page.url %}
+  {% assign ko_path = '/ko' | append: page.url %}
+{% endif %}
+<html lang="{{ current_lang }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ page.description | default: site.description }}">
     <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
-    <link rel="stylesheet" href="{{ '/assets/css/styles.css?v=20260602c' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/styles.css?v=20260602d' | relative_url }}">
   </head>
   <body>
     <header class="site-header">
       <nav class="nav-shell" aria-label="Primary navigation">
-        <a class="brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} home">
+        <a class="brand" href="{{ home_path | relative_url }}" aria-label="{{ site.title }} home">
           <span class="brand-mark">CL</span>
           <span>{{ site.title }}</span>
         </a>
@@ -20,11 +34,16 @@
           <span></span>
         </button>
         <div class="nav-links" data-nav-links>
-          <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}aria-current="page"{% endif %}>about</a>
-          <a href="{{ '/cv/' | relative_url }}" {% if page.url contains '/cv/' %}aria-current="page"{% endif %}>cv</a>
-          <a href="{{ '/publications/' | relative_url }}" {% if page.url contains '/publications/' %}aria-current="page"{% endif %}>publications</a>
-          <a href="{{ '/projects/' | relative_url }}" {% if page.url contains '/projects/' %}aria-current="page"{% endif %}>projects</a>
-          <a href="{{ '/blog/' | relative_url }}" {% if page.url contains '/blog/' %}aria-current="page"{% endif %}>blog</a>
+          <a href="{{ home_path | relative_url }}" {% if page.url == home_path %}aria-current="page"{% endif %}>{{ ui.nav.about }}</a>
+          <a href="{{ home_path | append: 'cv/' | relative_url }}" {% if page.url contains '/cv/' %}aria-current="page"{% endif %}>{{ ui.nav.cv }}</a>
+          <a href="{{ home_path | append: 'publications/' | relative_url }}" {% if page.url contains '/publications/' %}aria-current="page"{% endif %}>{{ ui.nav.publications }}</a>
+          <a href="{{ home_path | append: 'projects/' | relative_url }}" {% if page.url contains '/projects/' %}aria-current="page"{% endif %}>{{ ui.nav.projects }}</a>
+          <a href="{{ home_path | append: 'blog/' | relative_url }}" {% if page.url contains '/blog/' %}aria-current="page"{% endif %}>{{ ui.nav.blog }}</a>
+          <div class="language-toggle" aria-label="{{ ui.language_toggle }}">
+            <a href="{{ en_path | relative_url }}" lang="en" {% if current_lang == 'en' %}aria-current="true" class="is-active"{% endif %}>EN</a>
+            <span aria-hidden="true">|</span>
+            <a href="{{ ko_path | relative_url }}" lang="ko" {% if current_lang == 'ko' %}aria-current="true" class="is-active"{% endif %}>KO</a>
+          </div>
         </div>
       </nav>
     </header>
@@ -33,7 +52,7 @@
     </main>
     <footer class="site-footer">
       <span>&copy; {{ 'now' | date: '%Y' }} {{ site.title }}.</span>
-      <span>Robotic learning portfolio.</span>
+      <span>{{ ui.footer }}</span>
     </footer>
     <script src="{{ '/assets/js/site.js?v=20260602a' | relative_url }}"></script>
   </body>

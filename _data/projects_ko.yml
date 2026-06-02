@@ -1,0 +1,88 @@
+- title: Flower Thinning을 위한 Robot Learning
+  period: 2025.05 - 2026.05
+  organization: Metafarmers
+  role: Researcher
+  focus: 농업 manipulation을 위한 imitation learning 및 vision-language-action model
+  summary: Piper robot의 ACT 기반 imitation learning test에서 MaskACT, 그리고 AI-Worker bimanual robot의 GR00T N1.5 deployment까지 이어지는 autonomous flower thinning 프로젝트.
+  image: assets/img/projects/flower-thinning.jpg
+  thumbnail: https://img.youtube.com/vi/VW5eOvwIgac/hqdefault.jpg
+  fallback: Robot Learning for Flower Thinning
+  order: 1
+  url: /ko/projects/flower-thinning-vla/
+  technologies:
+    - Imitation Learning
+    - Action Chunking Transformer
+    - Vision-Language-Action Models
+- title: Pollination-Harvesting Robot
+  period: 2025.03 - Present
+  organization: Metafarmers
+  role: Researcher
+  focus: 통합 농업 로봇 시스템
+  summary: Indoor 및 greenhouse farming에서 pollination과 harvesting workflow를 수행하기 위한 통합 농업 로봇 플랫폼.
+  image: assets/img/projects/pollination-harvesting.jpg
+  thumbnail: https://img.youtube.com/vi/SbkeBz04240/hqdefault.jpg
+  fallback: Pollination-Harvesting Robot
+  order: 2
+  url: /ko/projects/pollination-harvesting-robot/
+  technologies:
+    - Agricultural Robotics
+    - Behavior Trees
+    - RGB-D Perception
+- title: MuJoCo Teleoperation
+  period: 2025.01 - 2025.02
+  organization: Robot Intelligence Lab, Prof. Sungjoon Choi
+  role: Research contributor
+  focus: Teleoperation interface
+  summary: Robot manipulation demonstration 수집을 위한 simulation 및 hand-tracking 기반 teleoperation interface.
+  image: assets/img/projects/mujoco-teleoperation.jpg
+  thumbnail: https://img.youtube.com/vi/d22TnlbT-_A/hqdefault.jpg
+  fallback: MuJoCo Teleoperation
+  order: 3
+  url: /ko/projects/mujoco-teleoperation/
+  technologies:
+    - MuJoCo
+    - Vive Tracker
+    - Manus Glove
+- title: KETI 3D Teleoperation
+  period: 2024.09 - 2024.12
+  organization: Korea Electronics Technology Institute (KETI)
+  role: Researcher, Dexterous Manipulation
+  focus: Dexterous teleoperation
+  summary: 비정형 환경에서 robot interaction을 지원하는 3D collaborative teleoperation stack.
+  image: assets/img/projects/keti-teleoperation.jpg
+  fallback: KETI 3D Teleoperation
+  order: 4
+  url: /ko/projects/keti-teleoperation/
+  technologies:
+    - Dexterous Manipulation
+    - 3D Teleoperation
+    - Object Detection
+- title: Process Anomaly Detection
+  period: 2024.01 - 2024.07
+  organization: PYLONEER
+  role: AI/IoT Researcher
+  focus: Sensor data and time-series AI
+  summary: 공정 장비 current data 분석과 anomaly detection을 위한 time-series sensor AI 프로젝트.
+  image: assets/img/projects/process-anomaly-detection.jpg
+  fallback: Sensor AI
+  order: 5
+  url: /ko/projects/process-anomaly-detection/
+  technologies:
+    - Time-Series Analysis
+    - Anomaly Detection
+    - Sensor Data
+- title: DRL Pedestrian Avoidance
+  period: 2022.12 - 2023.02
+  organization: Hanyang University
+  role: M.S. researcher
+  focus: Mobile robot navigation
+  summary: Pedestrian 및 불규칙 이동 장애물 회피를 위한 deep reinforcement learning 기반 mobile robot navigation 프로젝트.
+  image: assets/img/projects/drl-pedestrian-avoidance.jpg
+  thumbnail: https://img.youtube.com/vi/fIwOb2AFtnU/hqdefault.jpg
+  fallback: DRL Navigation
+  order: 6
+  url: /ko/projects/drl-pedestrian-avoidance/
+  technologies:
+    - Deep Reinforcement Learning
+    - Mobile Robots
+    - Navigation

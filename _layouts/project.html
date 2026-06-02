@@ -1,6 +1,8 @@
 ---
 layout: default
 ---
+{% assign current_lang = page.lang | default: site.lang | default: 'en' %}
+{% assign ui = site.data.ui[current_lang] | default: site.data.ui.en %}
 <article class="content-page project-detail">
   <header class="page-header">
     <p class="eyebrow">{{ page.period }}</p>
@@ -22,24 +24,24 @@ layout: default
     <figure class="detail-media media-shell" data-media-shell>
       <img src="{{ page.image | relative_url }}" alt="{{ page.title }} project media" data-media>
       <div class="media-fallback" data-media-fallback>
-        <span class="fallback-kicker">Project Media Slot</span>
+        <span class="fallback-kicker">{{ ui.project.media_kicker }}</span>
         <strong>{{ page.image }}</strong>
-        <small>Add an image or GIF here to replace this fallback.</small>
+        <small>{{ ui.project.media_help }}</small>
       </div>
     </figure>
   {% endif %}
 
   <section class="project-facts">
     <div>
-      <span>Role</span>
+      <span>{{ ui.project.role }}</span>
       <strong>{{ page.role }}</strong>
     </div>
     <div>
-      <span>Organization</span>
+      <span>{{ ui.project.organization }}</span>
       <strong>{{ page.organization }}</strong>
     </div>
     <div>
-      <span>Focus</span>
+      <span>{{ ui.project.focus }}</span>
       <strong>{{ page.focus }}</strong>
     </div>
   </section>
@@ -50,7 +52,7 @@ layout: default
 
   {% if page.demo_flow %}
     <section class="section project-section">
-      <h2>Learning Progression</h2>
+      <h2>{{ ui.project.progression }}</h2>
       <div class="progression-list">
         {% for item in page.demo_flow %}
           <article class="progression-item">
@@ -71,7 +73,7 @@ layout: default
 
   {% if page.results %}
     <section class="section project-section project-results">
-      <h2>Results</h2>
+      <h2>{{ ui.project.results }}</h2>
       <ul>
         {% for result in page.results %}
           <li>{{ result }}</li>
@@ -82,7 +84,7 @@ layout: default
 
   {% if page.technologies %}
     <section class="section tight">
-      <h2>Technologies</h2>
+      <h2>{{ ui.project.technologies }}</h2>
       <div class="focus-grid small">
         {% for tech in page.technologies %}
           <span>{{ tech }}</span>
