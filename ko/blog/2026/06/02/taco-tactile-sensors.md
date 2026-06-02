@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "TacO: Robot Manipulation을 위한 Tactile Sensor 비교"
+title: "TacO: TacO: Benchmarking Tactile Sensors for Object Manipulation"
 description: Hardware spec이 아니라 policy success 기준으로 tactile sensor를 비교한 TacO benchmark에 대한 reading note.
 permalink: /ko/blog/2026/06/02/taco-tactile-sensors/
 lang: ko

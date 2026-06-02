@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "VITRA: Human Activity Video로 Vision-Language-Action Model 사전학습하기"
+title: "VITRA: Scalable Vision-Language-Action Model Pretraining for Robotic Manipulation with Real-Life Human Activity Videos"
 description: Unscripted egocentric human video를 dexterous manipulation pretraining data로 변환하는 VITRA에 대한 reading note.
 permalink: /ko/blog/2026/06/01/vitra-human-video-vla/
 lang: ko
