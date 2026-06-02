@@ -6,6 +6,7 @@ role: Researcher
 focus: Imitation learning and vision-language-action models for agricultural manipulation
 summary: From ACT-based imitation learning on a Piper robot to MaskACT and GR00T N1.5 deployment on an AI-Worker bimanual robot for autonomous flower thinning.
 image: assets/img/projects/flower-thinning.jpg
+thumbnail: https://img.youtube.com/vi/VW5eOvwIgac/hqdefault.jpg
 fallback: Robot Learning for Flower Thinning
 order: 1
 featured_video:

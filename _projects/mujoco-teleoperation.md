@@ -6,6 +6,7 @@ role: Research contributor
 focus: Teleoperation interface
 summary: Simulation and hand-tracking interface for collecting robot manipulation demonstrations.
 image: assets/img/projects/mujoco-teleoperation.jpg
+thumbnail: https://img.youtube.com/vi/d22TnlbT-_A/hqdefault.jpg
 fallback: MuJoCo Teleoperation
 order: 3
 featured_video:

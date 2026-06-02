@@ -6,6 +6,7 @@ role: Researcher
 focus: Integrated agricultural robot system
 summary: Integrated agricultural robot platform for pollination and harvesting workflows in indoor and greenhouse farming.
 image: assets/img/projects/pollination-harvesting.jpg
+thumbnail: https://img.youtube.com/vi/SbkeBz04240/hqdefault.jpg
 fallback: Pollination-Harvesting Robot
 order: 2
 featured_video:

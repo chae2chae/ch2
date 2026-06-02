@@ -6,6 +6,7 @@ role: M.S. researcher
 focus: Mobile robot navigation
 summary: Mobile robot navigation project using deep reinforcement learning for pedestrian and irregular obstacle avoidance.
 image: assets/img/projects/drl-pedestrian-avoidance.jpg
+thumbnail: https://img.youtube.com/vi/fIwOb2AFtnU/hqdefault.jpg
 fallback: DRL Navigation
 order: 6
 featured_video:

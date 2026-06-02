@@ -1,11 +1,18 @@
 {% assign project = include.project %}
+{% assign card_image = project.thumbnail | default: project.image %}
 <a class="project-card" href="{{ project.url | relative_url }}">
-  <figure class="card-media media-shell" data-media-shell>
-    <img src="{{ project.image | relative_url }}" alt="{{ project.title }} thumbnail" data-media>
-    <div class="media-fallback" data-media-fallback>
-      <span>{{ project.fallback | default: 'Project Media' }}</span>
-    </div>
-  </figure>
+  {% unless include.hide_media %}
+    <figure class="card-media media-shell" data-media-shell>
+      {% if card_image contains '://' %}
+        <img src="{{ card_image }}" alt="{{ project.title }} thumbnail" data-media>
+      {% else %}
+        <img src="{{ card_image | relative_url }}" alt="{{ project.title }} thumbnail" data-media>
+      {% endif %}
+      <div class="media-fallback" data-media-fallback>
+        <span>{{ project.fallback | default: 'Project Media' }}</span>
+      </div>
+    </figure>
+  {% endunless %}
   <div class="card-body">
     <span class="card-meta">{{ project.period }}</span>
     <h3>{{ project.title }}</h3>

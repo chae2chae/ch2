@@ -50,7 +50,7 @@ layout: default
   <div class="card-grid">
     {% assign featured_projects = site.projects | sort: 'order' | slice: 0, 6 %}
     {% for project in featured_projects %}
-      {% include project-card.html project=project %}
+      {% include project-card.html project=project hide_media=true %}
     {% endfor %}
   </div>
 </section>
@@ -89,7 +89,7 @@ layout: default
   <div class="section-heading split-heading">
     <div>
       <p class="eyebrow">Latest Blog</p>
-      <h2>Project notes</h2>
+      <h2>Blog posts</h2>
     </div>
     <a class="text-link" href="{{ '/blog/' | relative_url }}">View blog</a>
   </div>
