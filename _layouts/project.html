@@ -8,14 +8,26 @@ layout: default
     <p>{{ page.summary }}</p>
   </header>
 
-  <figure class="detail-media media-shell" data-media-shell>
-    <img src="{{ page.image | relative_url }}" alt="{{ page.title }} project media" data-media>
-    <div class="media-fallback" data-media-fallback>
-      <span class="fallback-kicker">Project Media Slot</span>
-      <strong>{{ page.image }}</strong>
-      <small>Add an image or GIF here to replace this fallback.</small>
-    </div>
-  </figure>
+  {% if page.featured_video %}
+    <figure class="detail-media video-shell">
+      <iframe
+        src="{{ page.featured_video.embed_url }}"
+        title="{{ page.featured_video.title | default: page.title }}"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
+    </figure>
+  {% else %}
+    <figure class="detail-media media-shell" data-media-shell>
+      <img src="{{ page.image | relative_url }}" alt="{{ page.title }} project media" data-media>
+      <div class="media-fallback" data-media-fallback>
+        <span class="fallback-kicker">Project Media Slot</span>
+        <strong>{{ page.image }}</strong>
+        <small>Add an image or GIF here to replace this fallback.</small>
+      </div>
+    </figure>
+  {% endif %}
 
   <section class="project-facts">
     <div>
@@ -35,6 +47,38 @@ layout: default
   <section class="prose">
     {{ content }}
   </section>
+
+  {% if page.demo_flow %}
+    <section class="section project-section">
+      <h2>Learning Progression</h2>
+      <div class="progression-list">
+        {% for item in page.demo_flow %}
+          <article class="progression-item">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+            {% if item.links %}
+              <div class="demo-links">
+                {% for link in item.links %}
+                  <a class="text-link" href="{{ link.url }}" target="_blank" rel="noreferrer">{{ link.label }}</a>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% if page.results %}
+    <section class="section project-section project-results">
+      <h2>Results</h2>
+      <ul>
+        {% for result in page.results %}
+          <li>{{ result }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
 
   {% if page.technologies %}
     <section class="section tight">

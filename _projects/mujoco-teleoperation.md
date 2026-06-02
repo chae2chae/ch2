@@ -8,6 +8,9 @@ summary: Simulation and hand-tracking interface for collecting robot manipulatio
 image: assets/img/projects/mujoco-teleoperation.jpg
 fallback: MuJoCo Teleoperation
 order: 3
+featured_video:
+  title: MuJoCo Teleoperation Interface
+  embed_url: https://www.youtube.com/embed/d22TnlbT-_A
 technologies:
   - MuJoCo
   - Vive Tracker

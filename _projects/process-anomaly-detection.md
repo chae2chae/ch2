@@ -7,7 +7,7 @@ focus: Sensor data and time-series AI
 summary: Time-series sensor AI project for process equipment current-data analysis and anomaly detection.
 image: assets/img/projects/process-anomaly-detection.jpg
 fallback: Sensor AI
-order: 6
+order: 5
 technologies:
   - Time-Series Analysis
   - Anomaly Detection
