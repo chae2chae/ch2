@@ -3,7 +3,7 @@ layout: default
 ---
 {% assign current_lang = page.lang | default: site.lang | default: 'en' %}
 {% assign ui = site.data.ui[current_lang] | default: site.data.ui.en %}
-<article class="content-page post-detail">
+<article class="content-page post-detail{% if page.wide %} post-detail-wide{% endif %}">
   <header class="page-header">
     <p class="eyebrow">
       {% if page.date_label %}

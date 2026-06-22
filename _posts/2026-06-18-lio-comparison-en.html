@@ -1,0 +1,195 @@
+---
+layout: post
+title: "LIO Comparison: FAST-LIO / FAST-LIO2 / Point-LIO"
+description: A comparison note on FAST-LIO, FAST-LIO2, and Point-LIO from frontend, state modeling, and backend integration perspectives.
+permalink: /blog/2026/06/18/lio-comparison/
+lang: en
+tags:
+  - Robot Learning
+  - Localization
+wide: true
+---
+
+{% include lio-comparison-assets.html %}
+
+<article class="lio-comparison">
+  <header class="lio-hero">
+    <canvas class="lio-cloud" aria-hidden="true"></canvas>
+    <div class="lio-wrap lio-hero-inner">
+      <p class="lio-eyebrow">LiDAR-Inertial Odometry · HKU MaRS</p>
+      <h2 class="lio-title">FAST-LIO · FAST-LIO2 ·<br><span class="b">Point-LIO</span></h2>
+      <p class="lio-lede">All three methods share the same iEKF + ikd-Tree family of ideas and should be read as <b>odometry front-ends</b>. The important split is not just implementation detail. It is whether the <b>IMU is treated as an input or as a measurement</b>.</p>
+      <div class="lio-pillrow">
+        <span class="lio-pill">iEKF</span>
+        <span class="lio-pill">ikd-Tree</span>
+        <span class="lio-pill">raw point registration</span>
+        <span class="lio-pill">not full SLAM</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="lio-section">
+    <div class="lio-wrap">
+      <p class="lio-sec-label"><span class="n">01</span> Overview</p>
+      <h2>Comparison At A Glance</h2>
+      <p class="lio-sec-note">The v1→v2 change is mostly a <b>frontend change</b>: mapping and registration. The v2→Point-LIO change is a <b>state-modeling change</b>. Those are separate axes.</p>
+      <div class="lio-table-scroll">
+        <table>
+          <thead>
+            <tr><th>Method</th><th>feature vs raw</th><th>IMU role</th><th>update unit</th><th>output rate</th><th>map structure</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>FAST-LIO (v1)</td><td>feature extraction</td><td>input</td><td>frame</td><td class="mono">~scan rate</td><td>kd-tree</td></tr>
+            <tr><td>FAST-LIO2</td><td>raw direct</td><td>input</td><td>frame</td><td class="mono">~scan rate</td><td>ikd-Tree</td></tr>
+            <tr><td>Point-LIO</td><td>raw direct</td><td class="hl">measurement</td><td class="hl">point</td><td class="mono hl">~kHz</td><td>ikd-Tree</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="lio-axes">
+        <div class="lio-axis"><div class="k">v1 → v2</div><div class="v"><b>Frontend replacement.</b> It removes feature extraction and uses raw point registration plus an incremental tree, ikd-Tree.</div></div>
+        <div class="lio-axis"><div class="k">v2 → Point-LIO</div><div class="v"><b>State-modeling change.</b> The IMU moves from input to measurement. Point-LIO is not simply "FAST-LIO3".</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lio-section">
+    <div class="lio-wrap">
+      <p class="lio-sec-label"><span class="n">02</span> Methods</p>
+      <h2>Core Idea, Pros, And Cons</h2>
+      <p class="lio-sec-note">All three are pure odometry systems. They do not include loop closure, so long-range drift remains a shared limitation.</p>
+      <div class="lio-cards">
+        <article class="lio-card">
+          <div class="lio-card-head"><h3>FAST-LIO</h3><span class="lio-tag">v1 · 2021</span></div>
+          <p class="lio-core"><b>Core idea:</b> Solve the iEKF Kalman gain in <b>state dimension</b> instead of measurement dimension, making updates fast even with high-rate LiDAR measurements.</p>
+          <div class="lio-pc">
+            <div class="pros"><h4>Pros</h4><ul>
+              <li>Lightweight and computationally cheap, useful for <b>embedded or small platforms</b></li>
+              <li>Tightly coupled and fast for its time</li>
+            </ul></div>
+            <div class="cons"><h4>Cons</h4><ul>
+              <li><b>Depends on feature extraction</b>, so it is weaker in vegetation, tunnels, and other feature-poor scenes</li>
+              <li>Uses a regular kd-tree, so map updates are more expensive</li>
+              <li>FAST-LIO2 is better for most practical use cases</li>
+            </ul></div>
+          </div>
+        </article>
+
+        <article class="lio-card">
+          <div class="lio-card-head"><h3>FAST-LIO2</h3><span class="lio-tag">2022 · default</span></div>
+          <p class="lio-core"><b>Core idea:</b> Remove feature extraction and use <b>raw point direct registration</b> with <b>ikd-Tree</b> for incremental insert, delete, and rebalance operations.</p>
+          <div class="lio-pc">
+            <div class="pros"><h4>Pros</h4><ul>
+              <li>Feature-free design is <b>robust in unstructured or degraded environments</b></li>
+              <li>Fast map updates through ikd-Tree, so real-time performance is strong</li>
+              <li>Good accuracy-speed tradeoff and the <b>largest practical ecosystem</b></li>
+            </ul></div>
+            <div class="cons"><h4>Cons</h4><ul>
+              <li>Frame-based update with IMU as input remains vulnerable to <b>IMU saturation and extremely aggressive motion</b></li>
+              <li>Not designed for kHz-level odometry output</li>
+              <li>Still pure odometry: drift and lack of loop closure remain</li>
+            </ul></div>
+          </div>
+        </article>
+
+        <article class="lio-card">
+          <div class="lio-card-head"><h3>Point-LIO</h3><span class="lio-tag">2023 · aggressive motion</span></div>
+          <p class="lio-core"><b>Core idea:</b> Include angular velocity and acceleration in the <b>state</b> as random-walk variables. The IMU becomes a <b>measurement</b> of those states rather than an input to propagation.</p>
+          <div class="lio-pc">
+            <div class="pros"><h4>Pros</h4><ul>
+              <li>Prediction is decoupled from IMU integration, enabling <b>point-by-point updates and ~kHz output</b></li>
+              <li><b>Robustness to IMU saturation</b> is the main selling point; saturated values can be rejected or down-weighted</li>
+              <li>Good fit for high-bandwidth control loops</li>
+            </ul></div>
+            <div class="cons"><h4>Cons</h4><ul>
+              <li><b>Process noise Q</b> becomes a sensitive new parameter, so tuning strongly affects performance</li>
+              <li>For benign motion, the benefit may be marginal</li>
+              <li>Requires saturation thresholds and noise characterization, adding <b>calibration burden</b></li>
+            </ul></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="lio-section">
+    <div class="lio-wrap">
+      <p class="lio-sec-label"><span class="n">03</span> Where To Use</p>
+      <h2>Application Guide</h2>
+      <div class="lio-table-scroll">
+        <table>
+          <thead><tr><th>Scenario</th><th>Recommendation</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>General handheld, ground robot, or drone setup</td><td class="hl">FAST-LIO2</td><td>Default choice, heavily validated, robust and accurate</td></tr>
+            <tr><td>Feature-poor or unstructured scenes such as vegetation, tunnels, open areas</td><td class="hl">FAST-LIO2</td><td>Raw direct registration is the key advantage</td></tr>
+            <tr><td>Severely limited compute with structured environments</td><td>FAST-LIO v1</td><td>Lightweight, but only attractive when the scene is structured</td></tr>
+            <tr><td>Aggressive motion or IMU saturation, such as racing drones, legged robots, or end-effector mounting</td><td class="hl">Point-LIO</td><td>Saturation robustness</td></tr>
+            <tr><td>kHz-level odometry output is needed for control</td><td class="hl">Point-LIO</td><td>Point-by-point output</td></tr>
+            <tr><td>Heavy vibration, such as agricultural machinery</td><td>Case-specific</td><td>Use Point-LIO if saturation is real; otherwise FAST-LIO2 is usually enough</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="lio-section">
+    <div class="lio-wrap">
+      <p class="lio-sec-label"><span class="n">04</span> Backend</p>
+      <h2>For SLAM Or Navigation</h2>
+      <div class="lio-callout">
+        <p><strong>Premise:</strong> these three systems are front-end odometry methods. They do not provide loop closure or global optimization.</p>
+        <p>Drift accumulates over long trajectories, and revisiting the same place will not automatically correct the map. Add the backend that matches the application.</p>
+      </div>
+
+      <div class="lio-flow">
+        <div class="lio-node accent"><div class="nt">LiDAR + IMU</div><div class="ns">raw sensor stream</div></div>
+        <div class="lio-conn"></div>
+        <div class="lio-node accent"><div class="nt">FAST-LIO2 / Point-LIO</div><div class="ns">front-end odometry · odom→base_link · high rate</div></div>
+        <div class="lio-conn"></div>
+        <div class="lio-branch">
+          <div class="lio-branch-card"><span class="bt">A · Full SLAM</span>Add loop detection, such as Scan Context, plus a <b>pose graph with GTSAM/iSAM2</b> to obtain a globally consistent map. Examples include <b>FAST-LIO-SLAM</b> or factor-graph-based LIO-SAM.</div>
+          <div class="lio-branch-card"><span class="bt">B · Navigation</span>Use <b>relocalization</b> against a prior map to publish map→odom. Example: <b>FAST-LIO-LOCALIZATION</b>. Keep mapping mode and localization mode separate.</div>
+        </div>
+        <div class="lio-conn"></div>
+        <div class="lio-node"><div class="nt">Map Conversion</div><div class="ns">occupancy grid (2D) · OctoMap (3D) · elevation map</div></div>
+        <div class="lio-conn"></div>
+        <div class="lio-node"><div class="nt">Nav2 / move_base</div><div class="ns">global plan → local plan → dynamic obstacle avoidance → cmd_vel</div></div>
+      </div>
+
+      <h2 class="lio-subheading">TF Tree</h2>
+      <div class="lio-tf">
+        <div class="lio-tf-row">
+          <span class="frame">map</span><span class="arrow">→</span>
+          <span class="frame">odom</span><span class="arrow">→</span>
+          <span class="frame">base_link</span><span class="arrow">→</span>
+          <span class="frame">sensor frames</span>
+        </div>
+        <div class="lio-tf-desc">
+          <div><code>odom → base_link</code> : published at high rate by the LIO front-end, such as FAST-LIO2 or Point-LIO</div>
+          <div><code>map → odom</code> : published by localization or loop-closure backend as the drift correction term</div>
+        </div>
+      </div>
+      <p class="lio-sec-note" style="margin-bottom:0;">In short, LIO owns <b>odom→base_link</b>, while the backend owns global consistency through <b>map→odom</b>. Keeping this split clean makes the navigation stack much easier to reason about.</p>
+    </div>
+  </section>
+
+  <section class="lio-section">
+    <div class="lio-wrap">
+      <p class="lio-sec-label"><span class="n">05</span> Decision</p>
+      <h2>Decision Cheat Sheet</h2>
+      <div class="lio-cheat">
+        <div class="lio-cheat-row"><div class="lio-cond">You only need <b>LIO accuracy and mapping</b></div><div class="lio-pick">FAST-LIO2</div></div>
+        <div class="lio-cheat-row"><div class="lio-cond"><b>Aggressive motion / IMU saturation / kHz output</b></div><div class="lio-pick">Point-LIO</div></div>
+        <div class="lio-cheat-row"><div class="lio-cond">You need a long-range <b>drift-corrected SLAM map</b></div><div class="lio-pick alt">+ loop closure + pose graph</div></div>
+        <div class="lio-cheat-row"><div class="lio-cond">You need <b>navigation on a built map</b></div><div class="lio-pick alt">+ relocalization + costmap + Nav2</div></div>
+        <div class="lio-cheat-row"><div class="lio-cond"><b>Extremely limited compute</b> + structured scene</div><div class="lio-pick alt">FAST-LIO v1</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="lio-footer">
+    <div class="lio-wrap">
+      <div class="lio-warn"><b>Practical warning:</b> budget time for three failure-prone areas: Point-LIO Q tuning, localization initial guess, and point-cloud-to-costmap conversion parameters such as height filters and resolution.</div>
+      <p class="lio-sig">// LIO comparison reference · FAST-LIO / FAST-LIO2 / Point-LIO</p>
+    </div>
+  </footer>
+</article>

@@ -1,0 +1,196 @@
+---
+layout: post
+title: "LIO 비교: FAST-LIO / FAST-LIO2 / Point-LIO"
+description: FAST-LIO, FAST-LIO2, Point-LIO의 차이를 frontend, state modeling, backend 관점에서 정리한 비교 노트.
+permalink: /ko/blog/2026/06/18/lio-comparison/
+lang: ko
+date_label: "2026.06.18"
+tags:
+  - Robot Learning
+  - Localization
+wide: true
+---
+
+{% include lio-comparison-assets.html %}
+
+<article class="lio-comparison">
+  <header class="lio-hero">
+    <canvas class="lio-cloud" aria-hidden="true"></canvas>
+    <div class="lio-wrap lio-hero-inner">
+      <p class="lio-eyebrow">LiDAR-Inertial Odometry · HKU MaRS</p>
+      <h2 class="lio-title">FAST-LIO · FAST-LIO2 ·<br><span class="b">Point-LIO</span></h2>
+      <p class="lio-lede">셋 다 같은 iEKF + ikd-Tree 엔진을 공유하는 <b>odometry(front-end)</b>입니다. 차이는 알고리즘 골조가 아니라 <b>IMU를 input으로 두느냐, measurement로 두느냐</b>는 모델링 철학에서 갈립니다.</p>
+      <div class="lio-pillrow">
+        <span class="lio-pill">iEKF</span>
+        <span class="lio-pill">ikd-Tree</span>
+        <span class="lio-pill">raw point registration</span>
+        <span class="lio-pill">not full SLAM</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="lio-section">
+    <div class="lio-wrap">
+      <p class="lio-sec-label"><span class="n">01</span> Overview</p>
+      <h2>한눈에 보는 비교</h2>
+      <p class="lio-sec-note">v1→v2 차이는 <b>frontend(맵·정합)</b>, v2→Point-LIO 차이는 <b>state 모델링</b>입니다. 두 축은 직교합니다.</p>
+      <div class="lio-table-scroll">
+        <table>
+          <thead>
+            <tr><th>Method</th><th>feature vs raw</th><th>IMU 역할</th><th>업데이트 단위</th><th>출력률</th><th>맵 구조</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>FAST-LIO (v1)</td><td>feature 추출</td><td>input</td><td>frame</td><td class="mono">~scan rate</td><td>kd-tree</td></tr>
+            <tr><td>FAST-LIO2</td><td>raw direct</td><td>input</td><td>frame</td><td class="mono">~scan rate</td><td>ikd-Tree</td></tr>
+            <tr><td>Point-LIO</td><td>raw direct</td><td class="hl">measurement</td><td class="hl">point</td><td class="mono hl">~kHz</td><td>ikd-Tree</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="lio-axes">
+        <div class="lio-axis"><div class="k">v1 → v2</div><div class="v"><b>frontend 교체.</b> feature를 버리고 raw point 직접 정합 + 증분 트리(ikd-Tree)를 사용합니다.</div></div>
+        <div class="lio-axis"><div class="k">v2 → Point-LIO</div><div class="v"><b>state 모델링 변경.</b> IMU를 input에서 measurement로 이동합니다. Point-LIO는 단순한 "v3"가 아닙니다.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lio-section">
+    <div class="lio-wrap">
+      <p class="lio-sec-label"><span class="n">02</span> Methods</p>
+      <h2>방법별 핵심 · 장단점</h2>
+      <p class="lio-sec-note">세 방법 모두 pure odometry라 loop closure가 없고, 장거리에서 drift가 누적된다는 공통 한계가 있습니다.</p>
+      <div class="lio-cards">
+        <article class="lio-card">
+          <div class="lio-card-head"><h3>FAST-LIO</h3><span class="lio-tag">v1 · 2021</span></div>
+          <p class="lio-core"><b>핵심:</b> iEKF의 Kalman gain을 측정 차원이 아닌 <b>state 차원</b>으로 풀어 high-rate LiDAR에서도 update를 빠르게 합니다.</p>
+          <div class="lio-pc">
+            <div class="pros"><h4>장점</h4><ul>
+              <li>가볍고 연산량이 적어 <b>임베디드/소형 플랫폼</b>에 유리</li>
+              <li>tightly-coupled 구조로 당시 기준 정확하고 빠름</li>
+            </ul></div>
+            <div class="cons"><h4>단점</h4><ul>
+              <li><b>feature 추출 의존</b>으로 식생·터널 등 feature 빈약 환경에 약함</li>
+              <li>맵이 일반 kd-tree라 갱신 비용이 큼</li>
+              <li>거의 모든 면에서 v2가 상위 호환</li>
+            </ul></div>
+          </div>
+        </article>
+
+        <article class="lio-card">
+          <div class="lio-card-head"><h3>FAST-LIO2</h3><span class="lio-tag">2022 · default</span></div>
+          <p class="lio-core"><b>핵심:</b> feature 추출을 제거하고 <b>raw point 직접 정합</b>과 <b>ikd-Tree</b>(incremental insert/delete/rebalance)를 사용합니다.</p>
+          <div class="lio-pc">
+            <div class="pros"><h4>장점</h4><ul>
+              <li>feature-free라 <b>비정형/degraded 환경에 강건</b></li>
+              <li>ikd-Tree로 맵 갱신이 빠르고 실시간성이 좋음</li>
+              <li>정확도·속도 균형이 좋고 <b>생태계가 가장 두꺼움</b></li>
+            </ul></div>
+            <div class="cons"><h4>단점</h4><ul>
+              <li>frame 기반 + IMU as input 구조라 <b>IMU 포화·극격렬 모션에 취약</b></li>
+              <li>kHz급 출력은 어려움</li>
+              <li>pure odometry라 drift와 loop closure 부재는 그대로 남음</li>
+            </ul></div>
+          </div>
+        </article>
+
+        <article class="lio-card">
+          <div class="lio-card-head"><h3>Point-LIO</h3><span class="lio-tag">2023 · aggressive motion</span></div>
+          <p class="lio-core"><b>핵심:</b> 각속도·가속도를 <b>state에 포함</b>(random-walk)하고, IMU를 input이 아니라 해당 state에 대한 <b>measurement</b>로 사용합니다.</p>
+          <div class="lio-pc">
+            <div class="pros"><h4>장점</h4><ul>
+              <li>prediction이 IMU 적분과 분리되어 <b>point-by-point, ~kHz 출력</b> 가능</li>
+              <li><b>IMU saturation 강건성</b>이 핵심 장점. 포화값을 reject/down-weight 가능</li>
+              <li>고대역폭 제어 루프에 적합</li>
+            </ul></div>
+            <div class="cons"><h4>단점</h4><ul>
+              <li><b>process noise Q</b>가 새 민감 파라미터로 등장해 튜닝이 성능을 좌우</li>
+              <li>일반적인 완만한 motion에서는 이득이 제한적</li>
+              <li>포화 임계값과 노이즈 특성이 필요해 <b>캘리브레이션 부담</b>이 생김</li>
+            </ul></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="lio-section">
+    <div class="lio-wrap">
+      <p class="lio-sec-label"><span class="n">03</span> Where To Use</p>
+      <h2>적용 가이드</h2>
+      <div class="lio-table-scroll">
+        <table>
+          <thead><tr><th>시나리오</th><th>추천</th><th>이유</th></tr></thead>
+          <tbody>
+            <tr><td>일반 핸드헬드·지상로봇·드론</td><td class="hl">FAST-LIO2</td><td>디폴트. 검증이 많고 강건·정확</td></tr>
+            <tr><td>feature 빈약/비정형(식생·터널·개활지)</td><td class="hl">FAST-LIO2</td><td>raw direct registration이 강점</td></tr>
+            <tr><td>연산 극제약 + structured 환경</td><td>FAST-LIO v1</td><td>가볍지만 환경이 정형일 때만 추천</td></tr>
+            <tr><td>격렬 모션·IMU 포화(레이싱드론·사족·EEF 장착)</td><td class="hl">Point-LIO</td><td>saturation 강건성</td></tr>
+            <tr><td>kHz 고출력 odometry가 제어에 필요</td><td class="hl">Point-LIO</td><td>point-by-point 출력</td></tr>
+            <tr><td>진동 심한 환경(농기계 등)</td><td>상황별</td><td>포화 수준이면 Point-LIO, 아니면 v2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="lio-section">
+    <div class="lio-wrap">
+      <p class="lio-sec-label"><span class="n">04</span> Backend</p>
+      <h2>SLAM / Navigation에 쓰려면</h2>
+      <div class="lio-callout">
+        <p><strong>전제:</strong> 이 세 개는 front-end odometry입니다. loop closure도 global 최적화도 없습니다.</p>
+        <p>장거리에서 drift가 쌓이고 같은 장소를 다시 와도 자동 보정되지 않습니다. 용도에 맞는 back-end를 추가로 붙여야 합니다.</p>
+      </div>
+
+      <div class="lio-flow">
+        <div class="lio-node accent"><div class="nt">LiDAR + IMU</div><div class="ns">raw sensor stream</div></div>
+        <div class="lio-conn"></div>
+        <div class="lio-node accent"><div class="nt">FAST-LIO2 / Point-LIO</div><div class="ns">front-end odometry · odom→base_link · high rate</div></div>
+        <div class="lio-conn"></div>
+        <div class="lio-branch">
+          <div class="lio-branch-card"><span class="bt">A · Full SLAM</span>Loop detection(Scan Context) + <b>pose-graph(GTSAM/iSAM2)</b>로 전역 일관 맵을 만듭니다. 예: <b>FAST-LIO-SLAM</b>, 또는 factor-graph 내장 LIO-SAM.</div>
+          <div class="lio-branch-card"><span class="bt">B · Navigation</span>사전 맵에서 <b>relocalization</b>(map→odom)을 수행합니다. 예: <b>FAST-LIO-LOCALIZATION</b>. Mapping 모드와 Localization 모드를 분리합니다.</div>
+        </div>
+        <div class="lio-conn"></div>
+        <div class="lio-node"><div class="nt">Map 변환</div><div class="ns">occupancy grid (2D) · OctoMap (3D) · elevation map</div></div>
+        <div class="lio-conn"></div>
+        <div class="lio-node"><div class="nt">Nav2 / move_base</div><div class="ns">global plan → local plan → 동적 장애물 회피 → cmd_vel</div></div>
+      </div>
+
+      <h2 class="lio-subheading">TF 트리</h2>
+      <div class="lio-tf">
+        <div class="lio-tf-row">
+          <span class="frame">map</span><span class="arrow">→</span>
+          <span class="frame">odom</span><span class="arrow">→</span>
+          <span class="frame">base_link</span><span class="arrow">→</span>
+          <span class="frame">sensor frames</span>
+        </div>
+        <div class="lio-tf-desc">
+          <div><code>odom → base_link</code> : LIO(FAST-LIO2/Point-LIO)가 high-rate로 publish</div>
+          <div><code>map → odom</code> : localization / loop-closure back-end가 publish하는 drift 보정분</div>
+        </div>
+      </div>
+      <p class="lio-sec-note" style="margin-bottom:0;">즉 LIO는 <b>odom→base_link</b>만 책임지고, 전역 일관성(<b>map→odom</b>)은 back-end가 채웁니다. 이 분리를 지켜야 nav stack이 깔끔하게 동작합니다.</p>
+    </div>
+  </section>
+
+  <section class="lio-section">
+    <div class="lio-wrap">
+      <p class="lio-sec-label"><span class="n">05</span> Decision</p>
+      <h2>의사결정 치트시트</h2>
+      <div class="lio-cheat">
+        <div class="lio-cheat-row"><div class="lio-cond">그냥 <b>LIO 정확도·맵</b>만 필요</div><div class="lio-pick">FAST-LIO2</div></div>
+        <div class="lio-cheat-row"><div class="lio-cond"><b>격렬 모션 / IMU 포화 / kHz 출력</b></div><div class="lio-pick">Point-LIO</div></div>
+        <div class="lio-cheat-row"><div class="lio-cond">장거리 <b>drift 없는 일관 맵 (SLAM)</b></div><div class="lio-pick alt">+ loop closure + pose graph</div></div>
+        <div class="lio-cheat-row"><div class="lio-cond">만든 맵에서 <b>자율주행 (navigation)</b></div><div class="lio-pick alt">+ relocalization + costmap + Nav2</div></div>
+        <div class="lio-cheat-row"><div class="lio-cond"><b>연산 극제약</b> + structured 환경</div><div class="lio-pick alt">FAST-LIO v1</div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="lio-footer">
+    <div class="lio-wrap">
+      <div class="lio-warn"><b>실무 주의:</b> Point-LIO의 Q 튜닝, localization 초기 위치 추정(initial guess), point cloud→costmap 변환 파라미터(높이 필터·해상도)는 가장 자주 터지는 3곳입니다. 시간 배분을 따로 빼두는 편이 좋습니다.</div>
+      <p class="lio-sig">// LIO comparison reference · FAST-LIO / FAST-LIO2 / Point-LIO</p>
+    </div>
+  </footer>
+</article>

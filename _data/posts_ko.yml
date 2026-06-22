@@ -1,3 +1,17 @@
+- title: "LIO 비교: FAST-LIO / FAST-LIO2 / Point-LIO"
+  description: FAST-LIO, FAST-LIO2, Point-LIO의 차이를 frontend, state modeling, backend 관점에서 정리한 비교 노트.
+  date_label: "2026.06.18"
+  url: /ko/blog/2026/06/18/lio-comparison/
+  tags:
+    - Robot Learning
+    - Localization
+- title: "Action Chunk 경계 처리 기법 비교"
+  description: 추론 지연이 만든 motion gap을 Naive, Nearest Matching, Temporal Ensembling, RTC 방식으로 비교하는 인터랙티브 데모.
+  date_label: "2026.06.18"
+  url: /ko/blog/2026/06/18/action-chunk-methods/
+  tags:
+    - Robot Learning
+    - Interactive Demo
 - title: "TacO: Robot Manipulation을 위한 Tactile Sensor 비교"
   description: Hardware spec이 아니라 policy success 기준으로 tactile sensor를 비교한 TacO benchmark에 대한 reading note.
   date_label: "2026.06.02"
